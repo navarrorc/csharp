@@ -1,89 +1,116 @@
-﻿using System;
+﻿using System.Text;
 
 public static class PigLatin
 {
     public static string Translate(string word)
     {
-
-        string firstLetter = word.Substring(0, 1);
-        string secondLetter = word.Substring(1, 1);
-        string thirdLetter = word.Substring(2, 1);
-
-        char[] vowels = new char[] { 'a', 'e', 'i', 'o', 'u' };
+        string[] words = word.Split(' ');
         string translation = "";
+        string[] vowels = new string[] { "a", "e", "i", "o", "u", "y" };
+        StringBuilder output = new StringBuilder();
 
-        switch (firstLetter)
+
+        foreach (string wrd in words)
         {
-            case "a":
-                translation = word + "ay";
-                break;
-            case "e":
-                translation = word + "ay";
-                break;
-            case "i":
-                translation = word + "ay";
-                break;
-            case "o":
-                translation = word + "ay";
-                break;
-            case "u":
-                translation = word + "ay";
-                break;
-            default:
-                // None of the other checks passed, so the word must start with a consonant.
-                // Turn string into array of character.
-                char[] charArray = word.ToCharArray();
+            string firstLetter = wrd.Substring(0, 1);
+            string secondLetter = wrd.Substring(1, 1);
+            string thirdLetter = (wrd.Length > 2) ? wrd.Substring(2, 1) : null;
 
-                // check if the second letter is also a consonant, essentially verifying that the word starts with a consonant cluster
-                bool isVowel = false;
-                foreach (char letter in vowels)
-                {
-                    if (charArray[1] == letter)
+            switch (firstLetter)
+            {
+                case "a":
+                    translation = wrd + "ay";
+                    output.Append(translation.PadLeft(translation.Length + 1));
+                    break;
+                case "e":
+                    translation = wrd + "ay";
+                    output.Append(translation.PadLeft(translation.Length + 1));
+                    break;
+                case "i":
+                    translation = wrd + "ay";
+                    output.Append(translation.PadLeft(translation.Length + 1));
+                    break;
+                case "o":
+                    translation = wrd + "ay";
+                    output.Append(translation.PadLeft(translation.Length + 1));
+                    break;
+                case "u":
+                    translation = wrd + "ay";
+                    output.Append(translation.PadLeft(translation.Length + 1));
+                    break;
+                default:
+                    // The word starts with a consonant
+
+                    // Handle "qu", for example "queen" becomes "eenquay"
+                    // see: http://stesie.github.io/2016/08/pig-latin-kata
+                    if (firstLetter == "q" && secondLetter == "u")
                     {
-                        if (letter != 'u')
-                        {
-                            // handles test where "queen" must be translated to "eenquay"
-                            isVowel = true;
-                        }
+                        translation = wrd.Substring(2) + firstLetter + secondLetter + "ay";
+                        output.Append(translation.PadLeft(translation.Length + 1));
+                        break;
                     }
-                }
 
-                if (isVowel)
-                {
-                    // the second letter is a vowel
-                    translation = word.Substring(1) + firstLetter + "ay";
-                    isVowel = false; // reset value
-                }
-                else
-                {
-                    // check if the third letter is also a consonant, essentially verifying that the word starts with a consonant cluster
-                    foreach (char letter in vowels)
+                    // Handle "xr" and "yt"
+                    // see: http://stesie.github.io/2016/08/pig-latin-kata
+                    if ((firstLetter == "x" && secondLetter == "r") || (firstLetter == "y" && secondLetter == "t"))
                     {
-                        if (charArray[2] == letter)
+                        translation = wrd + "ay";
+                        output.Append(translation.PadLeft(translation.Length + 1));
+                        break;
+                    }
+
+
+                    // check if the second letter is also a consonant, essentially verifying that the word starts with a consonant cluster
+                    bool isVowel = false;
+                    foreach (string letter in vowels)
+                    {
+                        if (secondLetter == letter)
                         {
-                            if (letter != 'u')
-                            {
-                                // handles test where "square" must be translated to "uaresqay"
-                                isVowel = true;
-                            }
+                            isVowel = true;
                         }
                     }
 
                     if (isVowel)
                     {
-                        // the second letter is consonant
-                        translation = word.Substring(2) + firstLetter + secondLetter + "ay";
+                        // the second letter is a vowel
+                        translation = wrd.Substring(1) + firstLetter + "ay";
+                        output.Append(translation.PadLeft(translation.Length + 1));
                     }
                     else
                     {
-                        translation = word.Substring(3) + firstLetter + secondLetter + thirdLetter + "ay";
+                        // check if the third letter is also a consonant, essentially verifying that the word starts with a consonant cluster                    
+                        isVowel = false; // reset value
+                        foreach (string letter in vowels)
+                        {
+                            if (thirdLetter == letter)
+                            {
+                                if (thirdLetter != "u")
+                                {
+                                    // Handle any consonant + "qu" at the word's beginning, example "square" becomes "aresquay"
+                                    // see: http://stesie.github.io/2016/08/pig-latin-kata
+                                    isVowel = true;
+
+                                }
+                            }
+                        }
+
+                        if (isVowel)
+                        {
+                            // the second letter is a consonant
+                            translation = wrd.Substring(2) + firstLetter + secondLetter + "ay";
+                            output.Append(translation.PadLeft(translation.Length + 1));
+                        }
+                        else
+                        {
+                            translation = wrd.Substring(3) + firstLetter + secondLetter + thirdLetter + "ay";
+                            output.Append(translation.PadLeft(translation.Length + 1));
+                        }
                     }
 
-                }
-
-                break;
+                    break;
+            }
         }
 
-        return translation;
+        return output.ToString().TrimStart();
     }
 }
