@@ -1,1 +1,1 @@
-# Exercism.io C# Challenges Solutions
+# Exercism.io C# Exercises Solutions
