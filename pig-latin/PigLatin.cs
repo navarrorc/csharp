@@ -9,7 +9,6 @@ public static class PigLatin
         string[] vowels = new string[] { "a", "e", "i", "o", "u", "y" };
         StringBuilder output = new StringBuilder();
 
-
         foreach (string wrd in words)
         {
             string firstLetter = wrd.Substring(0, 1);
@@ -89,7 +88,6 @@ public static class PigLatin
                                     // Handle any consonant + "qu" at the word's beginning, example "square" becomes "aresquay"
                                     // see: http://stesie.github.io/2016/08/pig-latin-kata
                                     isVowel = true;
-
                                 }
                             }
                         }
