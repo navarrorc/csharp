@@ -8,6 +8,7 @@ public static class PigLatin
         string translation = "";
         string[] vowels = new string[] { "a", "e", "i", "o", "u", "y" };
         StringBuilder output = new StringBuilder();
+        string result = "";
 
         foreach (string wrd in words)
         {
@@ -19,23 +20,23 @@ public static class PigLatin
             {
                 case "a":
                     translation = wrd + "ay";
-                    output.Append(translation.PadLeft(translation.Length + 1));
+                    output.Append(translation);
                     break;
                 case "e":
                     translation = wrd + "ay";
-                    output.Append(translation.PadLeft(translation.Length + 1));
+                    output.Append(translation);
                     break;
                 case "i":
                     translation = wrd + "ay";
-                    output.Append(translation.PadLeft(translation.Length + 1));
+                    output.Append(translation);
                     break;
                 case "o":
                     translation = wrd + "ay";
-                    output.Append(translation.PadLeft(translation.Length + 1));
+                    output.Append(translation);
                     break;
                 case "u":
                     translation = wrd + "ay";
-                    output.Append(translation.PadLeft(translation.Length + 1));
+                    output.Append(translation);
                     break;
                 default:
                     // The word starts with a consonant
@@ -45,7 +46,7 @@ public static class PigLatin
                     if (firstLetter == "q" && secondLetter == "u")
                     {
                         translation = wrd.Substring(2) + firstLetter + secondLetter + "ay";
-                        output.Append(translation.PadLeft(translation.Length + 1));
+                        output.Append(translation);
                         break;
                     }
 
@@ -54,7 +55,7 @@ public static class PigLatin
                     if ((firstLetter == "x" && secondLetter == "r") || (firstLetter == "y" && secondLetter == "t"))
                     {
                         translation = wrd + "ay";
-                        output.Append(translation.PadLeft(translation.Length + 1));
+                        output.Append(translation);
                         break;
                     }
 
@@ -73,7 +74,7 @@ public static class PigLatin
                     {
                         // the second letter is a vowel
                         translation = wrd.Substring(1) + firstLetter + "ay";
-                        output.Append(translation.PadLeft(translation.Length + 1));
+                        output.Append(translation);
                     }
                     else
                     {
@@ -96,19 +97,22 @@ public static class PigLatin
                         {
                             // the second letter is a consonant
                             translation = wrd.Substring(2) + firstLetter + secondLetter + "ay";
-                            output.Append(translation.PadLeft(translation.Length + 1));
+                            output.Append(translation);
                         }
                         else
                         {
                             translation = wrd.Substring(3) + firstLetter + secondLetter + thirdLetter + "ay";
-                            output.Append(translation.PadLeft(translation.Length + 1));
+                            output.Append(translation);
                         }
                     }
 
                     break;
             }
+
+            output.Append(" "); // adds space between words
         }
 
-        return output.ToString().TrimStart();
+        result = output.ToString().TrimEnd();
+        return result;
     }
 }
