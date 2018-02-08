@@ -2,6 +2,86 @@
 
 public static class PigLatin
 {
+
+    public static string Translate(string word)
+    {
+        string[] words = word.Split(" ");
+        StringBuilder builder = new StringBuilder();
+        string output = "";
+        string translation = "";
+        char[] vowels = new char[] { 'a', 'e', 'i', 'o', 'u' };
+
+        foreach (var item in words)
+        {
+            int vowelIndex = item.IndexOfAny(vowels, 0, 1); // check first letter
+
+            if (vowelIndex == 0 || item.IndexOf("xr") == 0 || item.IndexOf("yt") == 0)
+            {
+                // First letter is vowel
+                translation = item + "ay";
+            }
+            else
+            {
+                vowelIndex = item.IndexOfAny(vowels, 1, 1); // check second letter 
+                if (item.IndexOf("qu") == 0)
+                {
+                    vowelIndex = -1;
+                }
+                if (vowelIndex == 1)
+                {
+                    // Starts with just one consonant
+                    string firstLetter = item.Substring(0, 1);
+                    string restOfWord = item.Substring(1);
+                    translation = restOfWord + firstLetter + "ay";
+                }
+                else
+                {
+                    // Starts with 2 or more consonants(consonant cluster)
+                    if (item.Length == 2)
+                    {
+                        if (item.Substring(1, 1) == "y")
+                        {
+                            string firstLetter = item.Substring(0, 1);
+                            string restOfWord = item.Substring(1);
+                            translation = restOfWord + firstLetter + "ay";
+                        }
+                    }
+                    else
+                    {
+                        if (item.Contains("qu"))
+                        {
+                            int i = item.IndexOf("qu") + 1;
+                            string firstLetters = item.Substring(0, i + 1);
+                            string restOfWord = item.Substring(i + 1);
+                            translation = restOfWord + firstLetters + "ay";
+                        }
+                        // it contains "y" after a consonant cluster
+                        else if (item.IndexOfAny(vowels) == -1 && item.Contains("y"))
+                        {
+                            int i = item.IndexOf("y");
+                            string firstLetters = item.Substring(0, i);
+                            string restOfWord = item.Substring(i);
+                            translation = restOfWord + firstLetters + "ay";
+                        }
+                        else
+                        {
+                            int i = item.IndexOfAny(vowels);
+                            string firstLetters = item.Substring(0, i);
+                            string restOfWord = item.Substring(i);
+                            translation = restOfWord + firstLetters + "ay";
+                        }
+                    }
+                }
+            }
+
+            builder.Append(translation + " ");
+        }
+
+        output = builder.ToString().TrimEnd();
+        return output;
+    }
+
+    /*
     public static string Translate(string word)
     {
         string[] words = word.Split(' ');
@@ -115,4 +195,5 @@ public static class PigLatin
         result = output.ToString().TrimEnd();
         return result;
     }
+    */
 }
